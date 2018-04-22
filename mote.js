@@ -100,7 +100,7 @@ function wakeupRoutine() {
     setTimeout(function() {
         pumpOff();
     }, water_duration * minute);
-    client.publish('new/prova', '' + water_duration + ',' + Date.now(), {qos: '1'});
+    //client.publish('new/prova', '' + water_duration + ',' + Date.now(), {qos: '1'});
 }
 
 setInterval(function() {
