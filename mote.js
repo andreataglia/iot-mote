@@ -68,7 +68,7 @@ client.on('message', function(topic, message) {
     console.log("Got new message! Topic: " + topic + "; Message: " + message)
 
     //TODO check if topic is config
-    let data = message.toString().split(",");
+    var data = message.toString().split(",");
     interval = Number(data[0]);
     water_duration = Number(data[1]);
     console.log("changed config. new interval=" + interval + "; new water_duration=" + water_duration);
