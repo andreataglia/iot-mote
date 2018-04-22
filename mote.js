@@ -16,7 +16,7 @@ if (isPi) {
     pump.mode('out');
     //set the initial value of the pump to be off.
     pressCount = 0;
-    pump.value(false);
+    pump.value(true);
     var pumpIsOn = false;
 
     //look for a button press event and switch on the pump
@@ -77,6 +77,7 @@ client.on('message', function(topic, message) {
 function pumpOn() {
   console.log("pump is on!");
   if (isPi) {
+    console.log("pump is on! ON PI");
     if (!pumpIsOn) {
       pumpIsOn = true;
       pump.value(true);
