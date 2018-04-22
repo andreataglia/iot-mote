@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "detect-rpi": "^1.2.0",
-    "mqtt": "^2.17.0"
+    "mqtt": "^2.17.0",
+    "pi-pins": "^1.0.2"
   },
   "devDependencies": {},
   "scripts": {
