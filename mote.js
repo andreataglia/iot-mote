@@ -1,12 +1,10 @@
 ///////////////////////////////////////
 ///////// Vars Config ////////////////
 //////////////////////////////////////
-const deviceId = 'pizero3';
+const deviceId = 'bazzini/pizerow/';
 const minute = 60 * 1000;
-const watering_frequency_topic = 'field3';
-const watering_duration_topic = 'field4';
-var interval = 0.15;
-var water_duration = 0.2; //in minutes
+var interval = 0.5; //in minutes
+var water_duration = 0.1; //in minutes
 const isPi = require('detect-rpi')();
 
 if (isPi) {
@@ -62,13 +60,17 @@ client.on('packetreceive', function(packet) {
 client.on('packetsend', function(packet) {
     console.log(packet);
 })
+client.on('connect', function(packet) {
+    client.subscribe(deviceId + 'config');
+})
 client.on('message', function(topic, message) {
     // message is Buffer
     console.log("Got new message! Topic: " + topic + "; Message: " + message)
-    topic.split("/").map(function(val) {
-        if (val == watering_duration_topic) water_duration = Number(message);
-        else if (val == watering_frequency_topic) interval = Number(message);
-    });
+
+    //TODO check if topic is config
+    let data = message.split(",");
+    interval = Number(data[0]);
+    water_duration = Number(data[1]);
 })
 
 ///////////////////////////////////////////
@@ -77,7 +79,6 @@ client.on('message', function(topic, message) {
 function pumpOn() {
   console.log("pump is on!");
   if (isPi) {
-    console.log("pump is on! ON PI");
     if (!pumpIsOn) {
       pumpIsOn = true;
       pump.value(true);
@@ -101,10 +102,9 @@ function wakeupRoutine() {
     setTimeout(function() {
         pumpOff();
     }, water_duration * minute);
-    //client.publish('new/prova', '' + water_duration + ',' + Date.now(), {qos: '1'});
+    client.publish(deviceId + 'watering', '' + Date.now() + ',' + water_duration, {qos: '1'});
 }
 
 setInterval(function() {
-    console.log("starting routine function...");
     wakeupRoutine();
 }, interval * minute);
