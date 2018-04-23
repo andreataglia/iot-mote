@@ -14,7 +14,7 @@ if (isPi) {
     pump.mode('out');
     //set the initial value of the pump to be off.
     pressCount = 0;
-    pump.value(true);
+    pump.value(false);
     var pumpIsOn = false;
 
     //look for a button press event and switch on the pump
@@ -62,6 +62,8 @@ client.on('packetsend', function(packet) {
 })
 client.on('connect', function(packet) {
     client.subscribe(deviceId + 'config');
+    client.publish(deviceId + 'reqconfig', 'freq,time', {qos: '1'});
+    blinkPump();
 })
 client.on('message', function(topic, message) {
     // message is Buffer
@@ -96,6 +98,21 @@ function pumpOff() {
       }
   }
 
+}
+
+function blinkPump(){
+  setTimeout(function() {
+      pump.value(true);
+  }, 1000);
+  setTimeout(function() {
+      pump.value(false);
+  }, 1000);
+  setTimeout(function() {
+      pump.value(true);
+  }, 1000);
+  setTimeout(function() {
+      pump.value(false);
+  }, 1000);
 }
 
 function wakeupRoutine() {
