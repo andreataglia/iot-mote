@@ -3,8 +3,8 @@
 //////////////////////////////////////
 const deviceId = 'bazzini/pizerow/';
 const minute = 60 * 1000;
-var interval = 0.5; //in minutes
-var water_duration = 0.1; //in minutes
+var interval = 3; //in minutes
+var water_duration = 0.2; //in minutes
 const isPi = require('detect-rpi')();
 
 if (isPi) {
@@ -106,13 +106,13 @@ function blinkPump(){
   }, 1000);
   setTimeout(function() {
       pump.value(false);
-  }, 1000);
+  }, 2000);
   setTimeout(function() {
       pump.value(true);
-  }, 1000);
+  }, 3000);
   setTimeout(function() {
       pump.value(false);
-  }, 1000);
+  }, 4000);
 }
 
 function wakeupRoutine() {
